@@ -1,0 +1,7 @@
+id_consumo;Fecha;Municipio;Consumo_m3;Habitantes;Costo_Pesos;id_observacion
+1;1/01/2025;Medellín;21.08;2;31997.33;1
+2;2/01/2025;Manizales;48.08;7;76581.86;2
+3;3/01/2025;Cúcuta;37.46;3;57009.17;3
+4;4/01/2025;Cali;29.01;6;50667.92;3
+5;5/01/2025;Cali;37.49;3;92096.52;4
+;;;;;;
