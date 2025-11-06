@@ -1,1 +1,78 @@
+CREATE TABLE hogares (
+    id_hogar INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_hogar VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    num_personas INT NOT NULL,
+    tipo_hogar VARCHAR(100),  -- Ejemplo: Casa, Departamento
+    contacto VARCHAR(100)  -- Teléfono o correo electrónico
+);
+
+CREATE TABLE consumo_agua (
+    id_consumo INT AUTO_INCREMENT PRIMARY KEY,
+    id_hogar INT,
+    mes INT,  -- Mes en formato 1 a 12 (enero = 1, diciembre = 12)
+    anio INT,  -- Año
+    litros_consumidos INT,  -- Cantidad de agua consumida en litros
+    FOREIGN KEY (id_hogar) REFERENCES hogares(id_hogar)
+);
+
+CREATE TABLE consumo_recomendado (
+    id_recomendacion INT AUTO_INCREMENT PRIMARY KEY,
+    mes INT,  -- Mes en formato 1 a 12
+    anio INT,  -- Año
+    litros_recomendados INT  -- Consumo recomendado en litros
+);
+
+CREATE TABLE actividades_hogar (
+    id_actividad INT AUTO_INCREMENT PRIMARY KEY,
+    id_hogar INT,
+    actividad VARCHAR(255),  -- Descripción de la actividad (ej. "Uso de manguera para jardín")
+    frecuencia INT,  -- Frecuencia con que se realiza la actividad (ej. 1 para una vez al mes, 4 para cada semana, etc.)
+    duracion INT,  -- Duración de la actividad en minutos (por ejemplo, cuántos minutos se usa la manguera)
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_hogar) REFERENCES hogares(id_hogar)
+);
+
+CREATE TABLE usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuario VARCHAR(255),
+    password VARCHAR(255),
+    email VARCHAR(255),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE recomendaciones_hogar (
+    id_recomendacion_hogar INT AUTO_INCREMENT PRIMARY KEY,
+    id_hogar INT,
+    recomendacion TEXT,  -- Descripción de la recomendación
+    fecha_recomendacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('Pendiente', 'Cumplida', 'No Cumplida') DEFAULT 'Pendiente',
+    FOREIGN KEY (id_hogar) REFERENCES hogares(id_hogar)
+);
+
+CREATE TABLE fugas (
+    id_fuga INT AUTO_INCREMENT PRIMARY KEY,
+    id_hogar INT,
+    descripcion_fuga VARCHAR(255),  -- Descripción del tipo de fuga
+    fecha_deteccion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    volumen_agua_fuga INT,  -- Cantidad de agua perdida (en litros)
+    estado ENUM('Detectada', 'Arreglada', 'Pendiente') DEFAULT 'Pendiente',
+    FOREIGN KEY (id_hogar) REFERENCES hogares(id_hogar)
+);
+
+CREATE TABLE notificaciones (
+    id_notificacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_hogar INT,
+    mensaje TEXT,  -- Mensaje de la notificación (puede ser sobre un consumo excesivo, recomendación, etc.)
+    fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_hogar) REFERENCES hogares(id_hogar)
+);
+
+CREATE TABLE facturas_agua (
+    id_factura INT AUTO_INCREMENT PRIMARY KEY,
+    id_hogar INT,
+    mes INT,  -- Mes en formato 1 a 12
+    anio INT,  -- Año
+    monto_factura DECIMAL(10, 2),  -- Monto de la factura en la moneda local
+    FOREIGN KEY (id_hogar) REFERENCES hogares(id_hogar)
 
